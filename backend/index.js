@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
 const dotenv = require("dotenv");
-
+const path = require("path");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 dotenv.config();
@@ -254,7 +254,7 @@ Respond with only one answer in a readable format in paragraph with correct gram
     res.status(500).json({ error: "Failed to generate answer using Gemini." });
   }
 });
-const path = require("path");
+
 
 
 app.use(express.static(path.join(__dirname, "../fontend/build")));
