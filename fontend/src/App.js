@@ -5,7 +5,7 @@ import Engineeringsuggest from "./components/Engineeringsuggest";
 import EnglishLearning from "./components/EnglishLearning";
 import UPSCSection from "./components/UPSCSection";
 import Home from "./components/Home";
-import "./App.css";
+
 import Checking  from "./components/Checking";
 import Beginner  from "./components/Beginner";
 import Intermediate  from "./components/Intermediate";
