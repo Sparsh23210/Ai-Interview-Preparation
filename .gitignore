@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-frontend/node_modules/
+fontend/node_modules/
 backend/node_modules/
 
 # testing
@@ -12,9 +12,9 @@ backend/node_modules/
 
 # production
 /build
-frontend/build/
+fontend/build/
 backend/build/
-
+fontend/.cache/
 # misc
 .env
 backend/.env
