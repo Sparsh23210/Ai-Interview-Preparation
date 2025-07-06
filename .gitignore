@@ -14,8 +14,7 @@ backend/node_modules/
 /build
 fontend/build/
 backend/build/
-fontend/.cache/
-# misc
+
 .env
 backend/.env
 .DS_Store
