@@ -9,7 +9,9 @@ backend/node_modules/
 
 # testing
 /coverage
-
+**/node_modules/
+**/.cache/
+*.pack
 # production
 /build
 fontend/build/
