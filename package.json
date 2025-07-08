@@ -4,8 +4,8 @@
   "description": "",
   "main": "backend/index.js",
   "scripts": {
-   "install": "npm install --prefix backend && npm install --prefix fontend",
-    "build": "npm run build --prefix fontend",
+    "install-all": "npm install --prefix fontend && npm install --prefix backend",
+    "build": "cd fontend && npm install && npm run build",
     "start": "node backend/index.js"
   },
   "keywords": [],
