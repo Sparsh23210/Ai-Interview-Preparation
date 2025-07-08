@@ -5,12 +5,12 @@
 /.pnp
 build/
 .pnp.js
-frontend/node_modules/
-frontend/build/
-frontend/dist/
-frontend/.env*       # Ignores all frontend env files (.env, .env.local, etc.)
-frontend/.DS_Store
-frontend/coverage/
+fontend/node_modules/
+fontend/build/
+fontend/dist/
+fontend/.env*       
+fontend/.DS_Store
+fontend/coverage/
 
 backend/node_modules/
 backend/.env
