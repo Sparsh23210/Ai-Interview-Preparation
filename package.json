@@ -4,11 +4,12 @@
   "description": "",
   "main": "backend/index.js",
   "scripts": {
-   "install-all": "npm install --prefix fontend && npm install --prefix backend",
-    "build-client": "npm run build --prefix fontend",
-    "copy-build": "cp -r fontend/build backend/build",
-    "build": "npm run install-all && npm run build-client && npm run copy-build",
-    "start": "node backend/index.js"
+   "start": "node server/index.js",
+    "client": "npm start --prefix client",
+    "server": "npm start --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-client": "npm install --prefix client",
+    "build": "npm run install-client && npm run build --prefix client"
 
   },
   "keywords": [],
