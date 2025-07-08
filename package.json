@@ -2,14 +2,14 @@
   "name": "student-ai-preparation",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/index.js",
+  "main": "index.js",
   "scripts": {
-   "start": "node server/index.js",
-    "client": "npm start --prefix client",
-    "server": "npm start --prefix server",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "install-client": "npm install --prefix client",
-    "build": "npm run install-client && npm run build --prefix client"
+   "start": "node backend/index.js",
+    "fontend": "npm start --prefix fontend",
+    "backend": "npm start --prefix backend",
+    "dev": "concurrently \"npm run fontend\" \"npm run fontend\"",
+    "install-fontend": "npm install --prefix fontend",
+    "build": "npm run install-fontend && npm run build --prefix fontend"
 
   },
   "keywords": [],
