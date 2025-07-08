@@ -24,7 +24,7 @@ const Engineeringsuggest= () => {
     siblings: "",
     resume: null,
   });
-
+let silenceTimer = null;
   const [aiQuestion, setAiQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState(null);
@@ -57,11 +57,23 @@ const [fluencyFeedback, setFluencyFeedback] = useState("");
     setFormData({ ...formData, resume: e.target.files[0] });
   };
   
+const resetSilenceTimer = () => {
+  if (silenceTimer) clearTimeout(silenceTimer);
+  silenceTimer = setTimeout(() => {
+    stopListening();
+    console.log("Auto-stopped due to silence.");
+  }, 4000); 
+};
 
+useEffect(() => {
+  if (listening) {
+    resetSilenceTimer();
+  }
+}, [transcript]);
   const fetchUniqueQuestion = async (data) => {
     const maxRetries = 5;
     for (let i = 0; i < maxRetries; i++) {
-      const response = await axios.post("http://localhost:5000/api/engineering-question", data);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/engineering-question`, data);
       const newQuestion = response.data.question;
       if (!questionHistory.includes(newQuestion)) {
         setQuestionHistory((prev) => [...prev, newQuestion]);
@@ -72,7 +84,7 @@ const [fluencyFeedback, setFluencyFeedback] = useState("");
   };
   const fetchAnswer = async (question) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/engineering-question/answer", { text: question });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/engineering-question/answer`, { text: question });
       const newAnswer = response.data.answer;
       
       return newAnswer;
@@ -159,7 +171,7 @@ const [fluencyFeedback, setFluencyFeedback] = useState("");
 
   const analyzeTranscript = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/analyze-answer", { text: transcript });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/analyze-answer`, { text: transcript });
       setAnalysis(response.data);
     } catch (error) {
       console.error("Error analyzing transcript:", error);

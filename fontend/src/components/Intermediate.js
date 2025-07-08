@@ -24,6 +24,7 @@ const Intermediate= () => {
     siblings: "",
     resume: null,
   });
+  let silenceTimer = null;
 
   const [aiQuestion, setAiQuestion] = useState("");
   const [loading, setLoading] = useState(false);
@@ -59,7 +60,7 @@ const [fluencyFeedback, setFluencyFeedback] = useState("");
   const fetchUniqueQuestion = async () => {
     const maxRetries = 5;
     for (let i = 0; i < maxRetries; i++) {
-      const response = await axios.get("http://localhost:5000/api/intermediate");
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/question/intermediate`);
       const newQuestion = response.data.question;
       if (!questionHistory.includes(newQuestion)) {
         setQuestionHistory((prev) => [...prev, newQuestion]);
@@ -70,7 +71,7 @@ const [fluencyFeedback, setFluencyFeedback] = useState("");
   };
   const fetchAnswer = async (question) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/answerintermediate", { text: question });
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/answer/intermediate`, { text: question });
       const newAnswer = response.data.answer;
       
       return newAnswer;
@@ -96,6 +97,19 @@ const [fluencyFeedback, setFluencyFeedback] = useState("");
      console.warn("webgazer is not available.");
    }
  };
+ const resetSilenceTimer = () => {
+  if (silenceTimer) clearTimeout(silenceTimer);
+  silenceTimer = setTimeout(() => {
+    stopListening();
+    console.log("Auto-stopped due to silence.");
+  }, 4000); 
+};
+
+useEffect(() => {
+  if (listening) {
+    resetSilenceTimer();
+  }
+}, [transcript]);
  const provideanswer=async()=>{
   const result=await fetchAnswer(aiQuestion);
   setAnswer(result);
@@ -150,7 +164,7 @@ const [fluencyFeedback, setFluencyFeedback] = useState("");
 
   const analyzeTranscript = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/analyze-answer", { text: transcript });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/analyze-answer`, { text: transcript });
       setAnalysis(response.data);
     } catch (error) {
       console.error("Error analyzing transcript:", error);

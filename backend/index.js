@@ -8,7 +8,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY environment variable is not set.");
@@ -23,9 +23,26 @@ const upload = multer({ storage });
 
 
 
-app.get("/api/questioncheck", async (req, res) => {
-  
-     const prompt = "Generate a basic English question just to check a person's vocabulary and grammar.";
+app.post("/api/questioncheck", async (req, res) => {
+   const {
+    name,
+    location,
+    education,
+    fatherName,
+    motherName,
+    siblings,
+    Hobbies,
+  } = req.body;
+     const prompt = `Based on the candidate's profile below,generate a basic English speaking question designed to evaluate a person's fluency. The question should be open-ended and encourage the speaker to speak for at least a minute.enerate a basic English question just to check a person's vocabulary and grammar, question without any header and footer only question ";
+Name: ${name}
+Location: ${location}
+Education: ${education}
+Father's Name: ${fatherName}
+Mother's Name: ${motherName}
+Number of Siblings: ${siblings}
+Your Hobbies: ${Hobbies}
+
+Respond with only one  question.`
 
 
     try {
@@ -40,9 +57,9 @@ app.get("/api/questioncheck", async (req, res) => {
     res.status(500).json({ error: "Failed to generate question using Gemini." });
   }
 });
-app.get("/api/beginer", async (req, res) => {
+app.get("/api/question/beginer", async (req, res) => {
   
-    const prompt = "Generate a basic English speaking practice question suitable for beginners.";
+    const prompt = "Generate a  English speaking question suitable for beginners designed to evaluate a person's fluency. The question should be open-ended and encourage the speaker to speak for at least a minute.enerate a beginners level English question just to check a person's vocabulary and grammar,give only one question without any description ";
     try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const result = await model.generateContent(prompt);
@@ -55,9 +72,24 @@ app.get("/api/beginer", async (req, res) => {
     res.status(500).json({ error: "Failed to generate question using Gemini." });
   }
 });
-app.get("/api/intermediate", async (req, res) => {
+app.get("/api/question/intermediate", async (req, res) => {
   
-    const prompt = "Generate a English speaking practice question suitable for intermediate level.";
+    const prompt = "Generate a  intermediate level English speaking question designed to evaluate a person's fluency. The question should be open-ended and encourage the speaker to speak for at least a minute.enerate a intermediate level English question just to check a person's vocabulary and grammar,give only one question without any description ";
+    try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const content = await response.text();
+     const question = content.trim();
+    res.json({question});
+    } catch (err) {
+    console.error("Gemini AI error:", err.message);
+    res.status(500).json({ error: "Failed to generate question using Gemini." });
+  }
+});
+app.get("/api/question/expert", async (req, res) => {
+  
+    const prompt = "Generate a expert level English speaking question designed to evaluate a person's fluency. The question should be open-ended and encourage the speaker to speak for at least a minute.enerate a expert level English question just to check a person's vocabulary and grammar,give only one question without any description ";
     try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const result = await model.generateContent(prompt);
@@ -70,26 +102,15 @@ app.get("/api/intermediate", async (req, res) => {
     res.status(500).json({ error: "Failed to generate question using Gemini." });
   }
 });
-app.get("/api/expert", async (req, res) => {
-  
-    const prompt = "Generate a  English speaking practice question suitable for expert level.";
-    try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const content = await response.text();
-     const question = content.trim();
-    res.json({ question});
-    } catch (err) {
-    console.error("Gemini AI error:", err.message);
-    res.status(500).json({ error: "Failed to generate question using Gemini." });
-  }
-});
-app.post("/api/answercheck", async (req, res) => {
+app.post("/api/answer/check", async (req, res) => {
     const {text}=req.body;
+     if (!text || text.trim().length === 0) {
+    return res.status(400).json({ error: "No Question provided" });
+  }
   
     const prompt = `Generate a basic answer of the provided question.
-    Question:${text} Respond with only one answer in a readable gramatically correct form with maximum of 4 to 5 lines.`;
+    Question:${text} Respond with only one answer in a readable gramatically correct form with maximum of 4 to 5 lines.
+    `;
     try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const result = await model.generateContent(prompt);
@@ -99,10 +120,11 @@ app.post("/api/answercheck", async (req, res) => {
     res.json({ answer});
     } catch (err) {
     console.error("Gemini AI error:", err.message);
+     
     res.status(500).json({ error: "Failed to generate question using Gemini." });
   }
 });
-app.post("/api/answerbeginer", async (req, res) => {
+app.post("/api/answer/beginer", async (req, res) => {
     const {text}=req.body;
   
     const prompt = `Generate a basic answer of the provided question suitable for beginners.
@@ -121,7 +143,7 @@ app.post("/api/answerbeginer", async (req, res) => {
     res.status(500).json({ error: "Failed to generate question using Gemini." });
   }
 });
-app.post("/api/answerintermediate", async (req, res) => {
+app.post("/api/answer/intermediate", async (req, res) => {
     const { text } = req.body;
   
     const prompt = `Generate an answer to the provided question suitable for intermediate level. Question: ${text}
@@ -138,7 +160,7 @@ app.post("/api/answerintermediate", async (req, res) => {
     res.status(500).json({ error: "Failed to generate question using Gemini." });
   }
 });
-app.post("/api/answerexpert", async (req, res) => {
+app.post("/api/answer/expert", async (req, res) => {
     const { text } = req.body;
   
     const prompt = `Generate an answer to the provided question suitable for expert level. Question: ${text}
@@ -166,7 +188,7 @@ app.post("/api/analyze-answer", async (req, res) => {
 You are an English professor. Analyze the following student's spoken answer and rate:
 1. Fluency from 0-100%
 2. Grammar accuracy from 0-100%
-Text: """${text}"""
+Text: "${text}"
 Respond in JSON format: {  "grammar": number }
 `;
 
@@ -255,13 +277,16 @@ Respond with only one answer in a readable format in paragraph with correct gram
   }
 });
 
-
+app.use((req, res) => {
+  res.status(404).json({ error: "Not Found" });
+});
 
 app.use(express.static(path.join(__dirname, "../fontend/build")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../fontend/build/index.html"));
 });
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

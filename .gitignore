@@ -4,18 +4,24 @@
 /node_modules
 /.pnp
 .pnp.js
-fontend/node_modules/
-backend/node_modules/
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env*       # Ignores all frontend env files (.env, .env.local, etc.)
+frontend/.DS_Store
+frontend/coverage/
 
+backend/node_modules/
+backend/.env
+backend/logs/
+backend/*.log
+backend/.DS_Store
 # testing
 /coverage
-**/node_modules/
-**/.cache/
+
+
 *.pack
-# production
-/build
-fontend/build/
-backend/build/
+
 
 .env
 backend/.env
