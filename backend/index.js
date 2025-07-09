@@ -23,7 +23,7 @@ const upload = multer({ storage });
 
 
 
-app.post("/api/questioncheck", async (req, res) => {
+app.post("/api/question/check", async (req, res) => {
    const {
     name,
     location,
@@ -277,9 +277,7 @@ Respond with only one answer in a readable format in paragraph with correct gram
   }
 });
 
-app.use((req, res) => {
-  res.status(404).json({ error: "Not Found" });
-});
+
 
 app.use(express.static(path.join(__dirname, "../fontend/build")));
 
