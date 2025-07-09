@@ -33,7 +33,7 @@ app.post("/api/question/check", async (req, res) => {
     siblings,
     Hobbies,
   } = req.body;
-     const prompt = `Based on the candidate's profile below,generate a basic English speaking question designed to evaluate a person's fluency. The question should be open-ended and encourage the speaker to speak for at least a minute.enerate a basic English question just to check a person's vocabulary and grammar, question without any header and footer only question ";
+     const prompt = `Based on the candidate's profile below,generate a basic English speaking question designed to evaluate a person's fluency. The question should be open-ended and encourage the speaker to speak for at least a minute.enerate a basic English question just to check a person's vocabulary and grammar, question without any header and footer only question
 Only return the question — no headings, explanations, or additional text.
      Name: ${name}
 Location: ${location}
@@ -70,7 +70,7 @@ app.get("/api/question/beginer", async (req, res) => {
     res.json({ question});
     } catch (err) {
     console.error("Gemini AI error:", err.message);
-    res.status(500).json({ error: "Failed to generate question using Gemini." });
+    res.json({ question: "Can you describe your daily routine from morning to night?" });
   }
 });
 app.get("/api/question/intermediate", async (req, res) => {
@@ -85,7 +85,7 @@ app.get("/api/question/intermediate", async (req, res) => {
     res.json({question});
     } catch (err) {
     console.error("Gemini AI error:", err.message);
-    res.status(500).json({ error: "Failed to generate question using Gemini." });
+    res.json({ question: "What are the advantages and disadvantages of using technology in education, and how do you think it will shape the future of learning?" });
   }
 });
 app.get("/api/question/expert", async (req, res) => {
@@ -100,7 +100,7 @@ app.get("/api/question/expert", async (req, res) => {
     res.json({ question});
     } catch (err) {
     console.error("Gemini AI error:", err.message);
-    res.status(500).json({ error: "Failed to generate question using Gemini." });
+    res.json({question: "To what extent should governments intervene in the regulation of social media platforms, and how can they balance the protection of free speech with the need to prevent misinformation and online harm?" });
   }
 });
 app.post("/api/answer/check", async (req, res) => {
