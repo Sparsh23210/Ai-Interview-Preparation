@@ -261,6 +261,18 @@ const resetSilenceTimer = () => {
     console.log("Auto-stopped due to silence.");
   }, 4000); 
 };
+ const handlePreviousQuestion = () => {
+  if (questionNumber > 1) {
+    const prevIndex = questionNumber - 2;
+    const prevQuestion = questionHistory[prevIndex];
+    setQuestionNumber(prevIndex + 1); 
+    setAiQuestion(prevQuestion);
+    resetTranscript();
+    setAnalysis(null);
+    setAnswer("");
+    setIsAnswered(false);
+  }
+};
 
 useEffect(() => {
   if (listening) {
@@ -385,7 +397,14 @@ const resetanalysis=()=>{
                   </div>
                 </div></div>
               )}
-              <div className="text-end">
+             <div className="d-flex justify-content-between mt-">
+                 <button
+    onClick={handlePreviousQuestion}
+    className="btn btn-outline-primary"
+    disabled={questionNumber <= 1}
+  >
+    Previous Question
+  </button>
                     <button onClick={handleNextQuestion} className="btn btn-info mt-2">
                       {loading ? (
         <>

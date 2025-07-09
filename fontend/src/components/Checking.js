@@ -80,8 +80,21 @@ useEffect(() => {
         return newQuestion;
       }
     }
-    return "Unable to generate a unique question. Please try again later.";
+    return ;
+    
   };
+  const handlePreviousQuestion = () => {
+  if (questionNumber > 1) {
+    const prevIndex = questionNumber - 2;
+    const prevQuestion = questionHistory[prevIndex];
+    setQuestionNumber(prevIndex + 1); 
+    setAiQuestion(prevQuestion);
+    resetTranscript();
+    setAnalysis(null);
+    setAnswer("");
+    setIsAnswered(false);
+  }
+};
   const fetchAnswer = async (question) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/answer/check`, { text: question });
@@ -410,7 +423,14 @@ const resetanalysis=()=>{
                   </div>
                 </div></div>
               )}
-              <div className="text-end">
+              <div className="d-flex justify-content-between mt-">
+                 <button
+    onClick={handlePreviousQuestion}
+    className="btn btn-outline-primary"
+    disabled={questionNumber <= 1}
+  >
+    Previous Question
+  </button>
                     <button onClick={handleNextQuestion} className="btn btn-info mt-2">
                       {loading ? (
         <>

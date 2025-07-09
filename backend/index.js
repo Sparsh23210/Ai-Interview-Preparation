@@ -34,7 +34,8 @@ app.post("/api/question/check", async (req, res) => {
     Hobbies,
   } = req.body;
      const prompt = `Based on the candidate's profile below,generate a basic English speaking question designed to evaluate a person's fluency. The question should be open-ended and encourage the speaker to speak for at least a minute.enerate a basic English question just to check a person's vocabulary and grammar, question without any header and footer only question ";
-Name: ${name}
+Only return the question — no headings, explanations, or additional text.
+     Name: ${name}
 Location: ${location}
 Education: ${education}
 Father's Name: ${fatherName}
@@ -54,7 +55,7 @@ Respond with only one  question.`
     res.json({ question});
     } catch (err) {
     console.error("Gemini AI error:", err.message);
-    res.status(500).json({ error: "Failed to generate question using Gemini." });
+    res.json({ question: "Can you tell me about your daily routine and how your hobbies influence your personal or academic life?" });
   }
 });
 app.get("/api/question/beginer", async (req, res) => {

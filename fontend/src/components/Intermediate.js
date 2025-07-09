@@ -268,7 +268,18 @@ useEffect(() => {
     console.log("Voice command 'stop' detected. Stopping...");
   }
 }, [transcript]);
-
+ const handlePreviousQuestion = () => {
+  if (questionNumber > 1) {
+    const prevIndex = questionNumber - 2;
+    const prevQuestion = questionHistory[prevIndex];
+    setQuestionNumber(prevIndex + 1); 
+    setAiQuestion(prevQuestion);
+    resetTranscript();
+    setAnalysis(null);
+    setAnswer("");
+    setIsAnswered(false);
+  }
+};
 const resetanalysis=()=>{
   if (SpeechRecognition && typeof SpeechRecognition.stopListening === "function") {
     SpeechRecognition.stopListening();
@@ -343,7 +354,7 @@ const resetanalysis=()=>{
               )}
 
               <div className="mt-3">
-                <h3 className="h4 fw-bold">🎙️ Your Answer (Voice Input)</h3>
+                <h3 className="h4 fw-bold"> Your Answer (Voice Input)</h3>
                 <h2 className="text-secondary mb-2">{transcript || "Your speech will appear here..."}</h2>
 
                 <div className="d-flex gap-3 mb-3">
@@ -363,7 +374,7 @@ const resetanalysis=()=>{
               </div>
               
               {analysis && (<div>
-                 <h4 className="h6 fw-bold mb-2">📊 Answer Analysis</h4>
+                 <h4 className="h6 fw-bold mb-2"> Answer Analysis</h4>
                 <div className="d-flex flex-row gap-2">
                   <div className="mt-4 p-3 bg-warning bg-opacity-25 rounded">
                    
@@ -385,7 +396,14 @@ const resetanalysis=()=>{
                   </div>
                 </div></div>
               )}
-              <div className="text-end">
+             <div className="d-flex justify-content-between mt-">
+                 <button
+    onClick={handlePreviousQuestion}
+    className="btn btn-outline-primary"
+    disabled={questionNumber <= 1}
+  >
+    Previous Question
+  </button>
                     <button onClick={handleNextQuestion} className="btn btn-info mt-2">
                        {loading ? (
         <>
