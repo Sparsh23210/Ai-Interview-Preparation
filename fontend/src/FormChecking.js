@@ -42,24 +42,12 @@ const FormChecking = ({
           <div className="col-12 col-md-6">
             <input name="name" placeholder="Your Name" className="form-control" onChange={handleChange} />
           </div>
-          <div className="col-12 col-md-6">
-            <input name="location" placeholder="Location" className="form-control" onChange={handleChange} />
-          </div>
+          
           <div className="col-12 col-md-6">
             <input name="education" placeholder="Education" className="form-control" onChange={handleChange} />
           </div>
-          <div className="col-12 col-md-6">
-            <input name="fatherName" placeholder="Father's Name" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-12 col-md-6">
-            <input name="motherName" placeholder="Mother's Name" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-12 col-md-6">
-            <input name="siblings" placeholder="No. of Siblings" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-12 col-md-6">
-            <input name="Hobbies" placeholder="Enter Your Hobbies" className="form-control" onChange={handleChange} />
-          </div>
+          
+          
           <div className="col-12">
             <button type="submit" className="btn btn-info mt-2 w-100 text-black fw-bold">
               {loading ? "Generating..." : "Submit & Generate AI Question"}

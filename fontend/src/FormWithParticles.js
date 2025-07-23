@@ -1,7 +1,7 @@
 import React from "react";
 import Particles from "@tsparticles/react";
 import particlesConfig from "./particlesConfig";
-// import Navbar from "./components/Navbar";
+
 
 const FormWithParticles = ({
   handleSubmit,
@@ -42,21 +42,11 @@ const FormWithParticles = ({
           <div className="col-12 col-md-6">
             <input name="name" placeholder="Your Name" className="form-control" onChange={handleChange} />
           </div>
-          <div className="col-12 col-md-6">
-            <input name="location" placeholder="Location" className="form-control" onChange={handleChange} />
-          </div>
+          
           <div className="col-12 col-md-6">
             <input name="education" placeholder="Education" className="form-control" onChange={handleChange} />
           </div>
-          <div className="col-12 col-md-6">
-            <input name="fatherName" placeholder="Father's Name" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-12 col-md-6">
-            <input name="motherName" placeholder="Mother's Name" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-12 col-md-6">
-            <input name="siblings" placeholder="No. of Siblings" className="form-control" onChange={handleChange} />
-          </div>
+          
           <div className="col-12">
             <label className="form-label">Upload Resume</label>
             <input

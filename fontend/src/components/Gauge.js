@@ -11,7 +11,7 @@ const GaugeComponent = ({ value }) => {
         arcWidth={0.3}
         percent={value / 100}  
         textColor="#000000"
-        formatTextValue={val => `${value} Wpm`}
+        formatTextValue={val => `${value} `}
       />
     </div>
   );

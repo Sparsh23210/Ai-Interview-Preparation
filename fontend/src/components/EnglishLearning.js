@@ -3,14 +3,31 @@ import Navbar from './Navbar'
 import {Link} from 'react-router-dom'
 import VantaHome from '../Vantahome';
 
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function EnglishLearning() {
-  // const navigate = useNavigate();
+   const navigate = useNavigate();
   return (
     <><VantaHome>
          <div>
             <Navbar/>
+            <button
+  onClick={() => navigate(-1)}
+  style={{
+    position: "fixed",
+    top: "65px",
+    left: "20px",
+    zIndex: 9999,
+    backgroundColor: "white ",
+    color: "black",
+    border: "none",
+    borderRadius: "20px",
+    padding: "8px 16px",
+    cursor: "pointer",
+  }}
+>
+  ← Back
+</button>
          </div >
          <h3 className="text-4xl font-bold text-center mb-10 text-dark"> Check Your Level?</h3>
          <div className="row justify-content-center  rounded-4 border p-4  w-20">
