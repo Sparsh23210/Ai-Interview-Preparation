@@ -10,11 +10,7 @@ const questionans = require("./routes/questionans");
 app.use(cors());
 app.use(express.json());
 app.use("/api",questionans);
-// app.use(express.static(path.join(__dirname, "../fontend/build")));
 
-// app.get("*", (_req, res) => {
-//   res.sendFile(path.join(__dirname, "../fontend/build/index.html"));
-// });
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
