@@ -35,6 +35,15 @@ export default function Streak() {
 
   useEffect(() => {
     fetchCurrentStreak();
+    const handleStreakUpdate = () => {
+      fetchCurrentStreak();
+    };
+
+    window.addEventListener("streak-updated", handleStreakUpdate);
+
+    
+    return () => {
+      window.removeEventListener("streak-updated", handleStreakUpdate);};
   }, []);
 
   return (

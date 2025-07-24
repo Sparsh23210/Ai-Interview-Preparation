@@ -11,6 +11,7 @@ import Navbar from "./Navbar";
 import circle from "../circle.gif";
 
 const Practicedaily= () => {
+  const [isanalysed,setIsanalysed]=useState(false);
   const [countdown, setCountdown] = useState(60);
   const [showStreakAnimation,setShowStreakAnimation]=useState(false);
   const timeoutRef = useRef(null);
@@ -105,7 +106,7 @@ const[ans,setAns]=useState(false);
       setAnswer(false);
     }
   };
-
+  
   const provideanswer=async()=>{
     const result=await fetchAnswer(aiQuestion);
     setAnswer(result);
@@ -160,23 +161,29 @@ const[ans,setAns]=useState(false);
       else if (calculatedWPM < 60) feedback = "Need Improvement";
       setFluencyFeedback(feedback);
       if (calculatedWPM > 1) {
-        await updateDailyPerformance(null, calculatedWPM); 
+        
+         await analyzeTranscript(transcript, calculatedWPM);
       }
-      await analyzeTranscript(transcript, calculatedWPM);
+     
     }
   };
 
   const analyzeTranscript = async (text, wpm) => {
+    setIsanalysed(true);
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/analyze-answer`, { text });
       const analysisResult = response.data;
       setAnalysis(analysisResult);
+      
       if (wpm > 1 && analysisResult!==undefined) {
-        await updateDailyPerformance(analysis.grammar, wpm);
+        await updateDailyPerformance(Number(analysisResult.grammar), wpm);
       }
     } catch (error) {
       alert("Error Analying Grammer");
       console.error("Error analyzing transcript:", error);
+    }
+    finally{
+      setIsanalysed(false);
     }
   };
 
@@ -254,7 +261,7 @@ const[ans,setAns]=useState(false);
         const data = existingDoc.data();
         await setDoc(perfRef, {
           wpm: Math.max(wpm, data.wpm), 
-          grammar: grammar !== null ? Math.max(grammar, data.grammar|| 0) : data.grammar,
+          grammar: grammar !== null ? Math.max(grammar, data.grammar|| 0) : (data.grammar || 0),
           attempts: (data.attempts || 0) + 1,
           timestamp: new Date()
         }, { merge: true });
@@ -286,6 +293,7 @@ const[ans,setAns]=useState(false);
           },
           { merge: true }
         );
+        window.dispatchEvent(new Event("streak-updated"));
         setShowStreakAnimation(true);
         setTimeout(() => setShowStreakAnimation(false), 4000);
         return;
@@ -305,6 +313,7 @@ const[ans,setAns]=useState(false);
           },
           { merge: true }
         );
+        window.dispatchEvent(new Event("streak-updated"));
         setShowStreakAnimation(true);
         setTimeout(() => setShowStreakAnimation(false), 4000);
         return;
@@ -328,6 +337,7 @@ const[ans,setAns]=useState(false);
             },
             { merge: true }
           );
+          window.dispatchEvent(new Event("streak-updated"));
           setShowStreakAnimation(true);
           setTimeout(() => setShowStreakAnimation(false), 4000);
         }
@@ -344,6 +354,7 @@ const[ans,setAns]=useState(false);
         },
         { merge: true }
       );
+      window.dispatchEvent(new Event("streak-updated"));
       setShowStreakAnimation(true);
       setTimeout(() => setShowStreakAnimation(false), 4000);
     } catch (error) {}
@@ -473,6 +484,7 @@ const[ans,setAns]=useState(false);
                           </div>
                         </div>
                       )}
+                      {isanalysed&&(<div className="d-flex justify-content-center align-items-center"><h3>Analysing</h3><img src={circle} alt="Loading" style={{ width: "70px", height: "70px" }} /></div>)}
                       {analysis && (
                         <div>
                           <h3 className="h6 fw-bold mb-2">Answer Analysis</h3>
