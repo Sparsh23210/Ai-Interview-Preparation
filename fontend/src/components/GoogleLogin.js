@@ -30,7 +30,7 @@ let isLoggingIn = false;
         }
 
         alert("Login Success");
-        navigate("/home");
+        window.location.replace("/home");
       } else {
         alert("Login failed");
       }
