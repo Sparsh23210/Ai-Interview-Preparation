@@ -370,7 +370,7 @@ const navigate=useNavigate();
     position: "fixed",
     top: "65px",
     left: "20px",
-    zIndex: 9999,
+    zIndex: 990,
     backgroundColor: "white ",
     color: "black",
     border: "none",

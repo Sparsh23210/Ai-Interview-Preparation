@@ -316,8 +316,8 @@ const [ans,setAns]=useState(false);
         style={{
           position: "fixed",
           top: "65px",
-          left: "20px",
-          zIndex: 9999,
+          left: "18px",
+          zIndex: 990,
           backgroundColor: "white ",
           color: "black",
           border: "none",

@@ -6,8 +6,10 @@ import FormChecking  from "../FormChecking";
 import VantaBackgroundWrapper from "../VantaBackgroundWrapper";
 import circle from "../circle.gif";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 const Checking= () => {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     education: "",
@@ -267,6 +269,23 @@ const [ans,setAns]=useState(false);
   return (
     <>
       <Navbar/>
+      <button
+  onClick={() => navigate(-1)}
+  style={{
+    position: "fixed",
+    top: "65px",
+    left: "20px",
+    zIndex: 990,
+    backgroundColor: "white ",
+    color: "black",
+    border: "none",
+    borderRadius: "20px",
+    padding: "8px 16px",
+    cursor: "pointer",
+  }}
+>
+  ← Back
+</button>
       <VantaBackgroundWrapper> 
         <div className="container py-5" style={{ marginTop: "20px", marginBottom: "20px" }}>
           <VantaBackgroundWrapper> 

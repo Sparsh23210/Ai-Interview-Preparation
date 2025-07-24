@@ -101,14 +101,20 @@ const Cn = () => {
         ← Back
       </button>
       <VantaBackgroundWrapper>
-        <div className="container-fluid py-5 px-4">
+        <div className="container-fluid py-5 px-4"style={{overflowY: "auto",overflowX:"auto"}}>
+          <VantaBackgroundWrapper>
           <div
             className="card shadow rounded mx-auto"
-            style={{ width: "1100px", height: "1100px" }}
+            style={{
+    maxWidth: "70%",
+    width: "95vw",
+    height: "auto",
+    minHeight: "400px"
+  }}
           >
             <div
               className="card-body"
-              style={{ maxWidth: "1100px", overflowY: "auto" }}
+             style={{ maxWidth: "100%", overflowY: "auto" }}
             >
               <h3 className="my-4 text-center">
                 CN Related Interview Questions
@@ -163,6 +169,7 @@ const Cn = () => {
               )}
             </button>
           </div>
+          </VantaBackgroundWrapper>
         </div>
       </VantaBackgroundWrapper>
     </>

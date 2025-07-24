@@ -77,9 +77,9 @@ const Common = () => {
         onClick={() => navigate(-1)}
         style={{
           position: "fixed",
-          top: "65px",
+          top: "60px",
           left: "20px",
-          zIndex: 9999,
+          zIndex: 990,
           backgroundColor: "white ",
           color: "black",
           border: "none",
@@ -91,9 +91,15 @@ const Common = () => {
         ← Back
       </button>
       <VantaBackgroundWrapper>
-        <div className="container-fluid py-5 px-4">
-          <div className="card shadow rounded mx-auto" style={{ width: "1100px", height: "1100px" }}>
-            <div className="card-body " style={{ maxWidth: "1100px", overflowY: "auto" }}>
+        <div className="container-fluid py-5 px-4" style={{overflowY: "auto",overflowX:"auto"}}>
+          <VantaBackgroundWrapper>
+          <div className="card shadow rounded mx-auto" style={{
+    maxWidth: "70%",
+    width: "95vw",
+    height: "auto",
+    minHeight: "400px"
+  }}>
+            <div className="card-body " style={{ maxWidth: "100%", overflowY: "auto" }}>
               <h3 className="my-4 text-center">
                 Common Related Interview Questions
               </h3>
@@ -142,7 +148,7 @@ const Common = () => {
                 </>
               )}
             </button>
-          </div>
+          </div></VantaBackgroundWrapper>
         </div>
       </VantaBackgroundWrapper>
     </>

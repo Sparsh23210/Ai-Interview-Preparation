@@ -16,8 +16,8 @@ export default function EnglishLearning() {
   style={{
     position: "fixed",
     top: "65px",
-    left: "20px",
-    zIndex: 9999,
+    left: "18px",
+    zIndex: 990,
     backgroundColor: "white ",
     color: "black",
     border: "none",
@@ -29,7 +29,7 @@ export default function EnglishLearning() {
   ← Back
 </button>
          </div >
-         <h3 className="text-4xl font-bold text-center mb-10 text-dark"> Check Your Level?</h3>
+         <h3 className="text-3xl font-bold text-center  text-dark" style={{ marginTop: '7rem'}}> Check Your Level?</h3>
          <div className="row justify-content-center  rounded-4 border p-4  w-20">
     <div className="col-md-2 mb-1">
       <Link
@@ -38,7 +38,7 @@ export default function EnglishLearning() {
       >
         <div className="card h-100 shadow-sm rounded-3 hover-shadow">
           <div className="card-body text-center">
-            <h5 className="card-title">Check Your Level</h5>
+            <h5 className="card-title">Check</h5>
             
           </div>
         </div>
