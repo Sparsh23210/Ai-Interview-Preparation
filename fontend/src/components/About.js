@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import { FcAssistant, FcVoicePresentation, FcTimeline, FcSurvey, FcReading } from 'react-icons/fc';
 import { FaReact, FaNodeJs, FaBootstrap } from 'react-icons/fa';
 import { SiExpress, SiOpenai } from 'react-icons/si';
-
+import myimage from "../myimage.jpg";
 export default function About() {
   return (
     <>
@@ -113,7 +113,7 @@ export default function About() {
                   <div className="col-6">
                     <div className="p-3 bg-light rounded-3 text-center">
                       <FcReading size={30} className="mb-2" />
-                      <h6>WebGazer.js</h6>
+                      <h6>Camera Setup</h6>
                     </div>
                   </div>
                 </div>
@@ -147,6 +147,11 @@ export default function About() {
             </div>
           </div>
         </div>
+      </div>
+      <div className='d-flex justify-content-center align-items-center flex-column mt-5'>
+        <img src={myimage} className='rounded-circle' width="150" height="150"/>
+       <h1>Developed by <b>Sparsh Chaurasiya</b>  </h1>
+       <h3> B.Tech Computer Science,Nit KURUKSHETRA</h3>
       </div>
     </>
   );
