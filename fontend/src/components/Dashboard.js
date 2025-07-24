@@ -107,7 +107,7 @@ const Dashboard = () => {
         <Col md={4} className="mb-3">
           <Card>
             <Card.Body>
-              <h5>🗓️ 7-Day Avg</h5>
+              <h5> 7-Day Avg</h5>
               <p>Grammar: {averages.day7.grammar}</p>
               <p>WPM: {averages.day7.wpm}</p>
             </Card.Body>
@@ -135,7 +135,7 @@ const Dashboard = () => {
 
       <Card className="mb-4">
         <Card.Body>
-          <h5 className="mb-3">Daily Grammar & Fluency</h5>
+          <h5 className="mb-3">Your Daily Progress</h5>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={dailyPerformanceData}>
               <CartesianGrid strokeDasharray="3 3" />

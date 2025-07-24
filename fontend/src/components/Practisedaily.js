@@ -9,7 +9,7 @@ import VantaBackgroundWrapper from "../VantaBackgroundWrapper";
 import trophyGif from '../Trophy.gif';
 import Navbar from "./Navbar";
 import circle from "../circle.gif";
-
+import { useNavigate } from "react-router-dom";
 const Practicedaily= () => {
   const [isanalysed,setIsanalysed]=useState(false);
   const [countdown, setCountdown] = useState(60);
@@ -33,6 +33,7 @@ const Practicedaily= () => {
   const [duration, setDuration] = useState(0);
   const [fluencyFeedback, setFluencyFeedback] = useState("");
 const[ans,setAns]=useState(false);
+const navigate=useNavigate();
   const {
     transcript,
     listening,
@@ -92,18 +93,18 @@ const[ans,setAns]=useState(false);
   };
 
   const fetchAnswer = async (question) => {
-    setAnswer(true);
+    setAns(true);
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/learn/answer`, { text: question });
       const newAnswer = response.data.answer;
-      setAnswer(false);
+      setAns(false);
       return newAnswer;
     } catch (error) {
       console.error("Error fetching AI answer:", error);
       return "Unable to generate answer. Please try again later.";
     }
     finally{
-      setAnswer(false);
+      setAns(false);
     }
   };
   
@@ -116,7 +117,7 @@ const[ans,setAns]=useState(false);
   const startListening = () => {
     resetTranscript();
     setStartTime(Date.now());
-    setCountdown(30); 
+    setCountdown(60); 
     SpeechRecognition.startListening({ continuous: true });
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -174,7 +175,7 @@ const[ans,setAns]=useState(false);
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/analyze-answer`, { text });
       const analysisResult = response.data;
       setAnalysis(analysisResult);
-      
+      setIsanalysed(false);
       if (wpm > 1 && analysisResult!==undefined) {
         await updateDailyPerformance(Number(analysisResult.grammar), wpm);
       }
@@ -363,11 +364,30 @@ const[ans,setAns]=useState(false);
   return (
     <>
       <Navbar/>
+         <button
+  onClick={() => navigate(-1)}
+  style={{
+    position: "fixed",
+    top: "65px",
+    left: "20px",
+    zIndex: 9999,
+    backgroundColor: "white ",
+    color: "black",
+    border: "none",
+    borderRadius: "20px",
+    padding: "8px 16px",
+    cursor: "pointer",
+  }}
+>
+  ← Back
+</button>
       <VantaBackgroundWrapper> 
         <div className="d-flex flex-row ">
           <div className="container py-5" style={{ marginTop: "20px", marginBottom: "20px" }}>
             <VantaBackgroundWrapper>
               {!showStreakAnimation && (
+                 
+                
                 <div className="d-flex flex-row flex-wrap justify-content-between align-items-start gap-4">
                   <div className="card shadow-lg rounded-20  "style={{ marginTop: "50px", marginBottom: "20px" }}>
                     <div className="card-body">
@@ -413,15 +433,17 @@ const[ans,setAns]=useState(false);
 
                           <div className="mt-3">
                             <h3 className="h4 fw-bold"> Your Answer (Voice Input)</h3>
-                            <div><p className="text-secondary mb-2">{transcript || "Your speech will appear here..."}</p></div>
+                            <div><p className="text-secondary mb-2">{transcript || "Speak for 60 seconds..."}</p></div>
+                            </div>
+                            <div className="d-flex justify-content-between align-items-center mb-3">
                             <div className="d-flex gap-3 mb-3">
                               <div className="d-flex  justifyContent-space-between " >
                                 <button type="button" onClick={startListening} className="btn btn-success hover-effect"style={{borderRadius:"20px"}}  >
                                   Start Talking
                                 </button>
                               </div>
-                            </div>
-                          </div>
+                           
+                          
                           <div className="mt-4">
                             <h5>Record your voice for Self-Evaluation</h5>
                             <div className="mb-2">
@@ -445,13 +467,8 @@ const[ans,setAns]=useState(false);
                                 <audio ref={audioRef} controls className="mb-3" />
                               </>
                             )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="d-flex flex-row flex-wrap justify-content-between align-items-start gap-1">
-                    <div className="card shadow-lg rounded-20  "style={{ marginTop: "50px", marginBottom: "20px" }}>
+                          </div> </div>
+                           <div >
                       {listening && (
                         <div className="text-center">
                           <svg width="120" height="120">
@@ -483,15 +500,24 @@ const[ans,setAns]=useState(false);
                             <small className="text-muted">Auto-stop after 60 seconds</small>
                           </div>
                         </div>
+                      )}</div>
+                        </div>
+                        </div>
                       )}
+                    </div>
+                  </div>
+                  <div className="d-flex flex-row flex-wrap justify-content-between align-items-start gap-1">
+                    <div className="card shadow-lg rounded-20  "style={{ marginTop: "50px", marginBottom: "20px" }}>
+                     
                       {isanalysed&&(<div className="d-flex justify-content-center align-items-center"><h3>Analysing</h3><img src={circle} alt="Loading" style={{ width: "70px", height: "70px" }} /></div>)}
                       {analysis && (
                         <div>
-                          <h3 className="h6 fw-bold mb-2">Answer Analysis</h3>
+                          <h3 className="h6 fw-bold mb-2 text-center">Answer Analysis</h3>
                           <div className="d-flex flex-column gap-2">
                             <div className="mt-4 p-3 bg-warning bg-opacity-25 rounded">
                               <p>Fluency Feedback: {fluencyFeedback}</p>
                               <div>
+                                <h3>Words Per Minute:</h3>
                                 <Gauge value={wpm}/>
                               </div>
                             </div>
