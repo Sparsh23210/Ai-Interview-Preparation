@@ -148,11 +148,7 @@ export default function About() {
           </div>
         </div>
       </div>
-      <div className='d-flex justify-content-center align-items-center flex-column mt-5'>
-        <img src={myimage} className='rounded-circle' width="150" height="150"/>
-       <h1>Developed by <b>Sparsh Chaurasiya</b>  </h1>
-       <h3> B.Tech Computer Science,Nit KURUKSHETRA</h3>
-      </div>
+      
     </>
   );
 }
