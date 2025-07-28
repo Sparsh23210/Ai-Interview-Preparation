@@ -716,6 +716,7 @@ Text: "${text}"
     if (!match) throw new Error('No valid JSON found in response');
 
     const json = JSON.parse(match[0]);
+     if (typeof json.grammar !== 'number') throw new Error("Grammar is not a number");
     res.json({ grammar: json.grammar});
   } catch (err) {
     console.error("AI JSON parse error:", err.message);

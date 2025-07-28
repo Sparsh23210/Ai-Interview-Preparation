@@ -1,57 +1,55 @@
-import React, { useEffect } from "react";
 import { auth, googleProvider, db } from "../firebase";
-import { signInWithRedirect, getRedirectResult } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 
 const GoogleLogin = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result?.user) {
-          const user = result.user;
-
-          const userDocRef = doc(db, "users", user.uid);
-          const userSnap = await getDoc(userDocRef);
-          if (!userSnap.exists()) {
-            await setDoc(userDocRef, {
-              email: user.email,
-              name: user.displayName || "",
-              createdAt: new Date(),
-              emailVerified: user.emailVerified,
-            });
-          }
-
-          alert("Login Success!");
-          navigate("/home");
-          setTimeout(() => window.location.replace("/home"), 1000);
-        }
-      } catch (error) {
-        console.error("Redirect login failed:", error);
-      }
-    };
-
-    handleRedirectResult();
-  }, [navigate]);
-
-  const handleLogin = async () => {
+let isLoggingIn = false;
+  const handleGoogleLogin = async () => {
+     if (isLoggingIn) return;
+  isLoggingIn = true;
     try {
-      await signInWithRedirect(auth, googleProvider);
-    } catch (error) {
-      console.error("Login Error:", error);
-    }
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      if (user) {
+       
+        const userDocRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userDocRef);
+
+        if (!userSnap.exists()) {
+         
+          await setDoc(userDocRef, {
+            email: user.email,
+            name: user.displayName || "",
+            createdAt: new Date(),
+            emailVerified: user.emailVerified,
+          });
+        }
+
+        alert("Login Success");
+        navigate("/home");
+      } else {
+        alert("Login failed");
+      }
+    } catch (err) {
+      console.error("Google Login Failed:", err.message);
+      alert("Google Login Error: " + err.message);
+    } finally {
+    isLoggingIn = false;
+  }
   };
 
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center vh-100">
-      <h2>Login with Google</h2>
-      <button onClick={handleLogin} className="btn btn-primary">
-        Sign In With Google
-      </button>
-    </div>
+    <button
+      onClick={handleGoogleLogin}
+      className="btn btn-outline-primary d-flex align-items-center gap-2"
+    >
+      <FcGoogle size={20} />
+      Login with Google
+    </button>
   );
 };
 

@@ -7,7 +7,8 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   signOut,
-  fetchSignInMethodsForEmail
+  fetchSignInMethodsForEmail,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import GoogleLogin from "./GoogleLogin";
@@ -20,7 +21,14 @@ const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
-
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user && user.emailVerified) {
+        navigate("/home");
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
   useEffect(() => {
     if (message) {
       alert(message);
@@ -30,7 +38,7 @@ const Login = () => {
 
   const checkEmailExists = async (email) => {
     try {
-      // Check if email exists in authentication system
+      
       const methods = await fetchSignInMethodsForEmail(auth, email);
       return methods.length > 0;
     } catch (error) {
@@ -46,7 +54,7 @@ const Login = () => {
     }
 
     try {
-      // First check if email is already registered
+     
       const emailExists = await checkEmailExists(signupData.email);
       if (emailExists) {
         setMessage("Email already registered. Please login instead.");
@@ -54,7 +62,7 @@ const Login = () => {
         return;
       }
 
-      // Create temporary auth user (will be deleted if not verified)
+      
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         signupData.email,
@@ -62,19 +70,19 @@ const Login = () => {
       );
       const user = userCredential.user;
 
-      // Send verification email
+      
       await sendEmailVerification(user);
       setIsVerifying(true);
       setMessage("Verification email sent. Please check your inbox.");
 
-      // Check for verification every 5 seconds
+      
       const interval = setInterval(async () => {
         await user.reload();
         if (user.emailVerified) {
           clearInterval(interval);
           setIsVerifying(false);
           
-          // Only after verification, store user data in Firestore
+          
           await setDoc(doc(db, "users", user.uid), {
             email: user.email,
             createdAt: new Date(),
@@ -82,19 +90,19 @@ const Login = () => {
           });
 
           setMessage("Email verified! Account created successfully. Please login.");
-          await signOut(auth); // Sign out so they can login fresh
-          setIsLogin(true); // Switch to login tab
+          await signOut(auth);
+          setIsLogin(true); 
         }
       }, 5000);
 
-      // Cleanup interval if component unmounts
+      
       return () => {
         clearInterval(interval);
         if (!user.emailVerified) {
-          // Delete unverified user after timeout (optional)
+          
           setTimeout(async () => {
             await user.delete();
-          }, 3600000); // 1 hour timeout
+          }, 3600000); 
         }
       };
 
@@ -115,7 +123,7 @@ const Login = () => {
     }
 
     try {
-      // First check if user exists in Firestore
+      
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("email", "==", loginData.email));
       const querySnapshot = await getDocs(q);
@@ -126,7 +134,7 @@ const Login = () => {
         return;
       }
 
-      // User exists in Firestore, proceed with login
+      
       const userCredential = await signInWithEmailAndPassword(
         auth,
         loginData.email,

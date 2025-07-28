@@ -136,7 +136,7 @@ const navigate=useNavigate();
     timeoutRef.current = setTimeout(() => {
       stopListening();
       clearInterval(intervalRef.current);
-    }, 30000);
+    }, 60000);
   };
 
   const stopListening = async() => {
@@ -175,7 +175,7 @@ const navigate=useNavigate();
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/analyze-answer`, { text });
       const analysisResult = response.data;
       setAnalysis(analysisResult);
-      setIsanalysed(false);
+       setIsanalysed(false);
       if (wpm > 1 && analysisResult!==undefined) {
         await updateDailyPerformance(Number(analysisResult.grammar), wpm);
       }
@@ -509,8 +509,8 @@ const navigate=useNavigate();
                   <div className="d-flex flex-row flex-wrap justify-content-between align-items-start gap-1">
                     <div className="card shadow-lg rounded-20  "style={{ marginTop: "50px", marginBottom: "20px" }}>
                      
-                      {isanalysed&&(<div className="d-flex justify-content-center align-items-center"><h3>Analysing</h3><img src={circle} alt="Loading" style={{ width: "70px", height: "70px" }} /></div>)}
-                      {analysis && (
+                      {isanalysed?(<div className="d-flex justify-content-center align-items-center"><h3>Analysing</h3><img src={circle} alt="Loading" style={{ width: "70px", height: "70px" }} /></div>)
+                      :(analysis && (
                         <div>
                           <h3 className="h6 fw-bold mb-2 text-center">Answer Analysis</h3>
                           <div className="d-flex flex-column gap-2">
@@ -533,7 +533,7 @@ const navigate=useNavigate();
                             </div>
                           </div>
                         </div>
-                      )}
+                      ))}
                     </div>
                   </div>
                 </div>
